@@ -42,8 +42,8 @@ export default function AfterLogs() {
       params:{time:new Date().toISOString().split("T")[0]}
     })
     .then((response)=>{
-      console.log(JSON.parse(response.data))
-      setShowToday(JSON.parse(response.data))
+      console.log(JSON.parse(JSON.stringify(response.data)))
+      setShowToday(JSON.parse(JSON.stringify(response.data)))
     })
   },[user]);
 

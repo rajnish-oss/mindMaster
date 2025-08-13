@@ -5,7 +5,7 @@ import { auth } from "@clerk/nextjs/server";
 
 const ai = new GoogleGenAI({});
 
-export async function GET(req: NextRequest, res: NextResponse) {
+export async function GET(req: NextRequest) {
   const { userId } = await auth();
 
   if (!userId) {

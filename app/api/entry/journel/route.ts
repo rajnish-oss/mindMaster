@@ -38,6 +38,6 @@ export  async function POST(req:NextRequest,res:NextResponse){
     })
 }
 
-export async function GET(req:NextRequest,res:NextResponse) {
+export async function GET(req:NextRequest) {
     return new NextResponse('Hello, Next.js!')
 }
