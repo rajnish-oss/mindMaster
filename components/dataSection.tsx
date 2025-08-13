@@ -32,6 +32,16 @@ const DataSection = ({data,day}:{data:Data,day:string}) => {
   return "Unknown";
 }
 
+function forTScore(score: number): string {
+  if (score >= 0 && score < 1) return "Bad";
+  if (score >= 1 && score < 2) return "Decent";
+  if (score >=2  && score < 3) return "Good";
+  if (score >= 3 && score <= 4) return "Very Good";
+  if (score >= 4 && score <= 5) return "Excellent";
+
+  return "Unknown";
+}
+
 
   return (
     <div>
@@ -83,7 +93,7 @@ const DataSection = ({data,day}:{data:Data,day:string}) => {
               </div>
               <div className="">
                 <p>Total score</p>
-                <p className="text-sm">{getComment((percent/100)*10)}</p>
+                <p className="text-sm">{forTScore(data.totalScore)}</p>
               </div>
             </div>
           </div>

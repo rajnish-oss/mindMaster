@@ -112,8 +112,8 @@ export function AiSuggestion({onGoodDays, onBadDays, suggestion }:{onGoodDays:st
           </CardHeader>
           <CardContent className="space-y-4 max-h-[48vh] overflow-scroll" style={{ scrollbarWidth: "none" }}>
             {activeTab === "good" &&
-             onGoodDays.map((pattern) => (
-                <div key="17" className="group">
+           onGoodDays?.length > 0 &&  onGoodDays.map((pattern) => (
+                <div className="group">
                   <div className="flex items-start gap-3 p-4 rounded-xl bg-gradient-to-r from-green-500/10 to-emerald-400/10 border border-green-500/20 hover:border-green-400/40 transition-all duration-300">
                     <p >🌑</p>
                     <p className="text-green-700 leading-relaxed flex-1">{pattern}</p>
@@ -123,8 +123,8 @@ export function AiSuggestion({onGoodDays, onBadDays, suggestion }:{onGoodDays:st
               ))}
 
             {activeTab === "bad" &&
-             onBadDays.map((pattern) => (
-                <div key="5" className="group">
+            onBadDays?.length > 0 && onBadDays.map((pattern) => (
+                <div  className="group">
                   <div className="flex items-start gap-3 p-4 rounded-xl bg-gradient-to-r from-red-500/10 to-pink-400/10 border border-red-500/20 hover:border-red-400/40 transition-all duration-300">
                     <p >🌑</p>
                     <p className="text-red-700 leading-relaxed flex-1">{pattern}</p>
@@ -134,8 +134,8 @@ export function AiSuggestion({onGoodDays, onBadDays, suggestion }:{onGoodDays:st
               ))}
 
             {activeTab === "suggestions" &&
-             suggestion.map((suggestion) => (
-                <div key="1" className="group">
+            suggestion?.length > 0 && suggestion.map((suggestion) => (
+                <div  className="group">
                   <div className="flex items-start gap-3 p-4 rounded-xl bg-gradient-to-r from-blue-500/10 to-cyan-400/10 border border-blue-500/20 hover:border-cyan-400/40 transition-all duration-300">
                     <p >🌑</p>
                     <p className="text-cyan-700 leading-relaxed flex-1">{suggestion}</p>
