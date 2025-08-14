@@ -17,6 +17,7 @@ import {
 import { useState } from "react";
 import DataSection from "./dataSection";
 import Loading from "./loading";
+import { UserButton } from "@clerk/nextjs";
 
 interface Option {
   points: number;
@@ -37,7 +38,7 @@ const anybody = Anybody({
   subsets: ["latin"],
 });
 
-export default function DailyLogs() {
+export default function DailyLogs({setDataSubmited}:any) {
   const { user } = useUser();
   const a = dayjs();
 
@@ -77,7 +78,8 @@ export default function DailyLogs() {
     console.log(data)
 
     axios.post("/api/entry/checks", data)
-    
+
+    setDataSubmited(true)
     
   };
 
@@ -100,7 +102,7 @@ export default function DailyLogs() {
           <p className="text-gray-700 text-sm">{a.format("dddd D MMM YYYY")}</p>
         </div>
         <div className="">
-          <img src={user?.imageUrl} className="h-10 rounded-full" alt="pf" />
+          <UserButton />
         </div>
       </header>
 

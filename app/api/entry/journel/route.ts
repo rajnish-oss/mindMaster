@@ -6,7 +6,6 @@ export  async function POST(req:NextRequest){
     const body = await req.json()
     const {userId} = await auth()
 
-    console.log(body.body)
 
     if(!body || !userId){
         return new NextResponse('Missing body', {status: 400})

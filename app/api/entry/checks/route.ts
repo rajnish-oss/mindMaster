@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
       cognitiveFunction: cfScore,
       scoialMatric: smScore,
       psychologicalFlexibility: pfScore,
-      journel: "No journel",
+      journel: '"<h1 style=\"text-align: center;\">Start your daily journal</h1><p></p>"',
       createdAt: new Date().toISOString().split("T")[0],
     },
     update: {

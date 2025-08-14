@@ -43,17 +43,16 @@ useEffect(() => {
   axios.get("/api/entry").then((response) => {
     const fetchedData = response.data;
     setJournelData(fetchedData);
-
+    response.data ? setDisable(true) : setDisable(false);
     let date = dayjs(value).format("YYYY-MM-DD");
 
     setPrevJournel(fetchedData.filter((data: Data) => data.createdAt === date));
   });
-}, [value, selectPage, user]);
+}, [value, selectPage, user,disable]);
 
 
   
-console.log(value,prevJournel)
-console.log(html)
+
 
   const submitJournel = (html: string) => {
     axios
@@ -61,8 +60,11 @@ console.log(html)
         body: JSON.stringify(html),
       })
       .then((response) => {
+  
         response.status === 200 ? setDisable(true) : setDisable(false);
       });
+
+
   };
 
   return (
@@ -76,9 +78,18 @@ console.log(html)
 
       <section className="flex gap-10">  
    
-       {prevJournel?.length > 0 ?  (<SimpleEditor prevJour={ prevJournel[0].journel} date={selectPage} setHtml={setHtml}/>
-
-   
+       {prevJournel?.length > 0 ?  (
+        <>
+        <SimpleEditor prevJour={ prevJournel[0].journel} date={selectPage} setHtml={setHtml}/>
+        <button
+              className={`absolute z-10 bottom-10 right-[28vw] bg-[#4c4efe] p-2 rounded-2xl ${ disable || (value?.toDateString() !== new Date().toDateString()) ? "hidden" : ""}`}
+              onClick={() => submitJournel(html)}
+              disabled={disable}
+            >
+              Submit
+            </button>
+        </>
+        
          ) : (
            <div className="">
                 <SimpleEditor
@@ -87,8 +98,7 @@ console.log(html)
               date=""
             />
             <button
-              className="absolute z-10 bottom-10 right-100 bg-[#4c4efe] p-2 rounded-2xl"
-              disabled={disable}
+              className={`absolute z-10 bottom-10 right-[28vw] bg-[#4c4efe] p-2 rounded-2xl ${ (value?.toDateString() !== new Date().toDateString()) ? "hidden" : ""}`}
               onClick={() => submitJournel(html)}
             >
               Submit

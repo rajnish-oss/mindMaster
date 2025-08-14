@@ -198,7 +198,7 @@ export function SimpleEditor({
     "main" | "highlighter" | "link"
   >("main")
   const toolbarRef = React.useRef<HTMLDivElement>(null)
-console.log(prevJour)
+
   const editor = useEditor({
     immediatelyRender: false,
     shouldRerenderOnTransaction: false,
@@ -248,8 +248,6 @@ console.log(prevJour)
 
 React.useEffect(() => {
   const json = generateJSON((prevJour.slice(1,-1) ?? "/"), [StarterKit])
-  console.log(prevJour)
-  console.log(json)
   if (editor) { 
     if (prevJour) {
       editor.commands.setContent(json);

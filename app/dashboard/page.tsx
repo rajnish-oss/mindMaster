@@ -20,6 +20,7 @@ const page = () => {
 
     const [selectedPage, setSelectedPage] = React.useState<string>("Home");
     const [showToday,setShowToday] = React.useState<boolean>(false)
+    const [dataSubmited,setDataSubmited] = React.useState<boolean>(false)
   
     const handlePageChange = (page: string) => {
       setSelectedPage(page);
@@ -74,12 +75,12 @@ const page = () => {
 
       <div className="border-[2px_0_2px_8px] m-[4px_0_0_4px] rounded-[40px_0_0_40px] border-[#C7C7C7] bg-[#F1F4FF] h-[98vh] w-[84vw] left-[15vw] absolute">
         {
-        selectedPage === "Home" ? showToday ?
+        selectedPage === "Home" ? showToday || dataSubmited ?
         <Suspense fallback={<Loading/>} >
           <AfterLogs />
         </Suspense>
           : <Suspense fallback={<Loading/>} >
-            <DailyLogs />
+            <DailyLogs setDataSubmited={setDataSubmited} />
           </Suspense> 
            : selectedPage === "Journel" ? 
            <Suspense fallback={<Loading/>} >

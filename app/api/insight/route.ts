@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
     },
   });
 
-  console.log(Entry);
+
 
   const response = await ai.models.generateContent({
     model: "gemini-2.5-flash",
@@ -39,7 +39,7 @@ From this data, analyze patterns and generate the following:
 2. On bad days (low totalScore), describe what the user struggled with using journel entries.
 3. Give a personalized and genuine suggestion for emotional or cognitive improvement — not generic advice, and based on recent trends.
 
-Be specific and psychologically insightful.
+Be specific and psychologically insightful.Dont give advice if 10 entries are not present or they are irrelevant and tell user to correct this
   `,
     config: {
       responseMimeType: "application/json",

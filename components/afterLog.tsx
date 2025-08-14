@@ -4,7 +4,7 @@ import { useUser } from "@clerk/nextjs";
 import dayjs from "dayjs";
 import { Anybody } from "next/font/google";
 import Banner from "@/components/banner";
-import { Option } from "@/components/options";
+import { UserButton } from "@clerk/nextjs";
 import axios from "axios"
 import Chartjs from "@/components/chart";
 import Load from "./load";
@@ -42,7 +42,7 @@ export default function AfterLogs() {
       params:{time:new Date().toISOString().split("T")[0]}
     })
     .then((response)=>{
-      console.log(JSON.parse(JSON.stringify(response.data)))
+
       setShowToday(JSON.parse(JSON.stringify(response.data)))
     })
   },[user]);
@@ -57,7 +57,7 @@ export default function AfterLogs() {
           <p className="text-gray-700 text-sm">{a.format("dddd D MMM YYYY")}</p>
         </div>
         <div className="">
-          <img src={user?.imageUrl} className="h-10 rounded-full" alt="pf" />
+          <UserButton />
         </div>
       </header>
 
