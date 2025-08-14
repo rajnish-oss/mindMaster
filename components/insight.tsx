@@ -49,8 +49,8 @@ const Insight = ({selectPage}:{selectPage:string}) => {
     setData(response.data);
   });
   axios.get("/api/insight").then((response) => {
-    setInsight(response.data);
-    console.log("in",response.data[0])
+    setInsight(response.data[0]);
+    console.log("in",(response.data[0]))
   });
 
 },[user]);
@@ -89,7 +89,7 @@ const Insight = ({selectPage}:{selectPage:string}) => {
         />
       </section> */}
       <section>
-       { insight ? <AiSuggestion {...insight} /> : <Load/> }
+       { insight ? <AiSuggestion onGoodDays={insight.onGoodDays} onBadDays={insight.onBadDays} suggestion={insight.suggestion} /> : <Load/> }
       </section>
     </div>
   );

@@ -19,7 +19,7 @@ export  async function GET(req:NextRequest){
         }
     })
 
-    return new NextResponse(JSON.stringify(response),{
+    return NextResponse.json(response,{
         status:200
     })
 }

@@ -16,6 +16,7 @@ interface Insight {
 export function AiSuggestion({onGoodDays, onBadDays, suggestion }:{onGoodDays:string[], onBadDays:string[], suggestion:string[]} ) {
   const [selectedInsight, setSelectedInsight] = useState(0)
   const [activeTab, setActiveTab] = useState<"good" | "bad" | "suggestions">("good")
+  console.log(onGoodDays,onBadDays,suggestion)
 
   return (
     <div className="space-y-8">

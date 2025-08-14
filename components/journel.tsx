@@ -7,7 +7,7 @@ import { Merienda } from "next/font/google";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import axios from "axios";
-import { strict } from "assert";
+import dayjs from "dayjs";
 
 type Value = Date | null;
 
@@ -27,27 +27,33 @@ interface Data {
   id: number;
 }
 
-const Journel = ({selectPage}:{selectPage:string}) => {
+const Journel = ({selectPage,user}:{selectPage:string,user:any}) => {
   const [value, onChange] = useState<Value>(new Date());
   const [prevJournel, setPrevJournel] = useState<any>(null);
   const [html, setHtml] = useState<string>("");
   const [disable, setDisable] = useState(false);
   const [journelData, setJournelData] = useState<Data[]>();
 
-
   // let date = new Date((value?.getTime() ?? 0) + 86400000).toISOString().split("T")[0];
   
   // const prevJournel = journelData && journelData.filter((data) => data.createdAt === date);
 
 
-  useEffect(() => {
-    axios.get("/api/entry").then((response) => {
-      setJournelData(response.data);
-    });
-    let date = new Date((value?.getTime() ?? 0) + 86400000).toISOString().split("T")[0];
+useEffect(() => {
+  axios.get("/api/entry").then((response) => {
+    const fetchedData = response.data;
+    setJournelData(fetchedData);
+
+    let date = dayjs(value).format("YYYY-MM-DD");
+
+    setPrevJournel(fetchedData.filter((data: Data) => data.createdAt === date));
+  });
+}, [value, selectPage, user]);
+
+
   
-  setPrevJournel(journelData && journelData.filter((data) => data.createdAt === date))
-  }, [value,selectPage]);
+console.log(value,prevJournel)
+console.log(html)
 
   const submitJournel = (html: string) => {
     axios
@@ -68,15 +74,14 @@ const Journel = ({selectPage}:{selectPage:string}) => {
         </div>
       </section>
 
-      <section className="flex gap-10">
-        {prevJournel && prevJournel.length > 0 ? (
-          <>
-          <SimpleEditor prevJour={prevJournel[0].journel} date={selectPage} setHtml={setHtml}/>
-          </>
-          
-        ) : (
-          <div className="">
-            <SimpleEditor
+      <section className="flex gap-10">  
+   
+       {prevJournel?.length > 0 ?  (<SimpleEditor prevJour={ prevJournel[0].journel} date={selectPage} setHtml={setHtml}/>
+
+   
+         ) : (
+           <div className="">
+                <SimpleEditor
               setHtml={setHtml}
               prevJour=""
               date=""

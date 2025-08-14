@@ -51,7 +51,7 @@ const page = () => {
     .then((response)=>{
       response.data ? setShowToday(true) : setShowToday(false)
     })
-  },[user]);
+  },[user,showToday]);
 
   return (
     <div className="h-[95vh] flex">
@@ -83,7 +83,7 @@ const page = () => {
           </Suspense> 
            : selectedPage === "Journel" ? 
            <Suspense fallback={<Loading/>} >
-            <Journel selectPage={selectedPage} />
+            <Journel selectPage={selectedPage} user={user} />
           </Suspense>
             :<Suspense fallback={<Loading/>} >
             <Insight selectPage={selectedPage} />

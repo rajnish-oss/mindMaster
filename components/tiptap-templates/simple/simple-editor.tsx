@@ -189,8 +189,8 @@ export function SimpleEditor({
   date
 }: {
   setHtml:any,
-  prevJour:string,
-  date:string
+  prevJour?:any,
+  date?:string
 }) {
   const isMobile = useIsMobile()
   const { height } = useWindowSize()
@@ -247,8 +247,9 @@ console.log(prevJour)
 // }, [editor]);
 
 React.useEffect(() => {
-  const json = generateJSON(JSON.stringify(prevJour), [StarterKit])
-  console.log(json,prevJour)
+  const json = generateJSON((prevJour.slice(1,-1) ?? "/"), [StarterKit])
+  console.log(prevJour)
+  console.log(json)
   if (editor) { 
     if (prevJour) {
       editor.commands.setContent(json);
