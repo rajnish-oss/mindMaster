@@ -179,13 +179,17 @@ export default function MentalHealthPlatform() {
             </p>
 
             <div className="flex flex-col justify-center items-center">
-              <Button
+            <SignedIn />
+              <SignInButton>
+            <Button
                 size="lg"
                 className="bg-orange-500 hover:bg-orange-600 w-fit text-lg px-8 py-4"
               >
                 Start Now
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
+              </SignInButton>
+              
               <p className="text-sm text-gray-400">
                 It's Free
               </p>
@@ -428,13 +432,17 @@ export default function MentalHealthPlatform() {
           </div>
 
           <div className="text-center mt-12">
-            <Button
+            <SignedIn />
+              <SignInButton>
+               <Button
               size="lg"
               className="bg-orange-500 hover:bg-orange-600 text-lg px-8 py-4"
             >
               Start Tracking Your Mind — For Free
               <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
+              </SignInButton>
+            
           </div>
         </div>
       </section>
