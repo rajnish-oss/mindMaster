@@ -39,7 +39,7 @@ export default function AfterLogs() {
 
   useEffect(() => {
     axios.get("/api/entry/checks",{
-      params:{time:new Date().toISOString().split("T")[0]}
+      params:{time:a.format("YYYY-MM-DD")}
     })
     .then((response)=>{
 

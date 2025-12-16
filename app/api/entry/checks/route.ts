@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import dayjs from "dayjs";
 import { auth } from "@clerk/nextjs/server";
 
 export async function POST(req: NextRequest) {
@@ -20,7 +21,7 @@ export async function POST(req: NextRequest) {
     where: {
       userId_createdAt: {
         userId: userId,
-        createdAt: new Date().toISOString().split("T")[0],
+        createdAt: dayjs().format("YYYY-MM-DD"),
       },
     },
     create: {
@@ -31,7 +32,7 @@ export async function POST(req: NextRequest) {
       scoialMatric: smScore,
       psychologicalFlexibility: pfScore,
       journel: '"<h1 style=\"text-align: center;\">Start your daily journal</h1><p></p>"',
-      createdAt: new Date().toISOString().split("T")[0],
+      createdAt: dayjs().format("YYYY-MM-DD"),
     },
     update: {
       totalScore,

@@ -8,6 +8,12 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import axios from "axios";
 import dayjs from "dayjs";
+import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
+import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
+
+// Extend dayjs with plugins if needed
+dayjs.extend(isSameOrBefore);
+dayjs.extend(isSameOrAfter);
 
 type Value = Date | null;
 
@@ -27,48 +33,63 @@ interface Data {
   id: number;
 }
 
-const Journel = ({selectPage,user}:{selectPage:string,user:any}) => {
+const Journel = ({ selectPage, user }: { selectPage: string; user: any }) => {
+  // Fix: Initialize with Date, not Dayjs object
   const [value, onChange] = useState<Value>(new Date());
   const [prevJournel, setPrevJournel] = useState<any>(null);
   const [html, setHtml] = useState<string>("");
   const [disable, setDisable] = useState(false);
   const [journelData, setJournelData] = useState<Data[]>();
+  const [submissionTrigger, setSubmissionTrigger] = useState(0);
 
-  // let date = new Date((value?.getTime() ?? 0) + 86400000).toISOString().split("T")[0];
-  
-  // const prevJournel = journelData && journelData.filter((data) => data.createdAt === date);
+  // Fix: Convert value to Dayjs object for comparison
+  const isToday = value ? dayjs(value).isSame(dayjs(), "day") : false;
 
+  useEffect(() => {
+    axios.get("/api/entry").then((response) => {
+      const fetchedData = response.data;
+      setJournelData(fetchedData);
 
-useEffect(() => {
-  axios.get("/api/entry").then((response) => {
-    const fetchedData = response.data;
-    setJournelData(fetchedData);
-    response.data ? setDisable(true) : setDisable(false);
-    let date = dayjs(value).format("YYYY-MM-DD");
+      // Fix: Handle null value case
+      let date = value ? dayjs(value).format("YYYY-MM-DD") : "";
 
-    setPrevJournel(fetchedData.filter((data: Data) => data.createdAt === date));
-  });
-}, [value, selectPage, user,disable]);
+      const selectedDateJournel = fetchedData.filter(
+        (data: Data) => data.createdAt === date
+      );
 
+      setPrevJournel(selectedDateJournel);
 
-  
-
+      // Check for disabling the submit button
+      if (!isToday || selectedDateJournel.length > 0) {
+        setDisable(true);
+      } else {
+        setDisable(false);
+      }
+    });
+  }, [value, selectPage, user, submissionTrigger]);
 
   const submitJournel = (html: string) => {
+    setDisable(true);
+    console.log(html)
     axios
       .post("/api/entry/journel", {
         body: JSON.stringify(html),
       })
       .then((response) => {
-  
-        response.status === 200 ? setDisable(true) : setDisable(false);
+        if (response.status === 200) {
+          setSubmissionTrigger((prev) => prev + 1);
+        } else {
+          setDisable(false);
+        }
+      })
+      .catch((error) => {
+        console.error("Submission failed:", error);
+        setDisable(false);
       });
-
-
   };
 
   return (
-    <div className="m-8  flex flex-col gap-5">
+    <div className="m-8 flex flex-col gap-5">
       <section>
         <div className={`${merienda.className} flex gap-2 items-center`}>
           <PencilLine />
@@ -76,41 +97,44 @@ useEffect(() => {
         </div>
       </section>
 
-      <section className="flex gap-10">  
-   
-       {prevJournel?.length > 0 ?  (
-        <>
-        <SimpleEditor prevJour={ prevJournel[0].journel} date={selectPage} setHtml={setHtml}/>
-        <button
-              className={`absolute z-10 bottom-10 right-[28vw] bg-[#4c4efe] p-2 rounded-2xl ${ disable || (value?.toDateString() !== new Date().toDateString()) ? "hidden" : ""}`}
+      <section className="flex gap-10">
+        {prevJournel?.length > 0 ? (
+          <>
+            <SimpleEditor
+              prevJour={prevJournel[0].journel}
+              date={selectPage}
+              setHtml={setHtml}
+            />
+
+            <button
+              className={`absolute z-10 bottom-10 right-[28vw] bg-[#4c4efe] p-2 rounded-2xl 
+               `}
               onClick={() => submitJournel(html)}
-              disabled={disable}
+              
             >
               Submit
             </button>
-        </>
-        
-         ) : (
-           <div className="">
-                <SimpleEditor
+          </>
+        ) : (
+          <div className="">
+            <SimpleEditor
               setHtml={setHtml}
               prevJour=""
               date=""
             />
+
             <button
-              className={`absolute z-10 bottom-10 right-[28vw] bg-[#4c4efe] p-2 rounded-2xl ${ (value?.toDateString() !== new Date().toDateString()) ? "hidden" : ""}`}
+              className={`absolute z-10 bottom-10 right-[28vw] bg-[#4c4efe] p-2 rounded-2xl 
+               `}
               onClick={() => submitJournel(html)}
+              
             >
               Submit
             </button>
           </div>
         )}
 
-        
-        {/* <button onClick={() => console.log("Text:", editor?.getText().text)}>Log Text</button> */}
-
         <Calendar
-        //@ts-ignore
           onChange={onChange}
           value={value}
           className="bg-[#f5f5f5] rounded-2xl w-[30vw] h-fit p-2"

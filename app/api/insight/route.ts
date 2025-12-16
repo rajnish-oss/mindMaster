@@ -23,7 +23,7 @@ export async function GET(req: NextRequest) {
   const response = await ai.models.generateContent({
     model: "gemini-2.5-flash",
     contents: `
-Use the last 10 entries from the user's mental health logs, each entry having:
+Use past entries from the user's mental health logs, each entry having:
 - totalScore: Int
 - emotionalRegulation: Int
 - cognitiveFunction: Int
@@ -39,7 +39,7 @@ From this data, analyze patterns and generate the following:
 2. On bad days (low totalScore), describe what the user struggled with using journel entries.
 3. Give a personalized and genuine suggestion for emotional or cognitive improvement — not generic advice, and based on recent trends.
 
-Be specific and psychologically insightful.Dont give advice if 10 entries are not present or they are irrelevant and tell user to correct this
+Be specific and psychologically insightful.
   `,
     config: {
       responseMimeType: "application/json",

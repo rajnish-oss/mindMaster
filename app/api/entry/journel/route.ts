@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma"
 import { auth } from "@clerk/nextjs/server"
 import { NextRequest, NextResponse } from "next/server"
+import dayjs from "dayjs"
 
 export  async function POST(req:NextRequest){
     const body = await req.json()
@@ -15,7 +16,7 @@ export  async function POST(req:NextRequest){
     where: {
       userId_createdAt: {
         userId: userId,
-        createdAt: new Date().toISOString().split("T")[0],
+        createdAt: dayjs().format("YYYY-MM-DD"),
       },
     },
     create: {
@@ -26,7 +27,7 @@ export  async function POST(req:NextRequest){
       scoialMatric: 0,
       psychologicalFlexibility: 0,
       journel: body.body,
-      createdAt: new Date().toISOString().split("T")[0],
+      createdAt: dayjs().format("YYYY-MM-DD"),
     },
     update: {
       journel: body.body,

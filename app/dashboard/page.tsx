@@ -10,6 +10,7 @@ import axios from 'axios';
 import { useUser } from '@clerk/nextjs'
 import AfterLogs from '@/components/afterLog';
 import Loading from '@/components/loading';
+import dayjs from 'dayjs';
 
 const merienda = Merienda({ weight: "400", subsets: ["latin"] });
 
@@ -47,7 +48,7 @@ const page = () => {
 
     useEffect(() => {
     axios.get("/api/entry/checks",{
-      params:{time:new Date().toISOString().split("T")[0]}
+      params: {time: dayjs().format("YYYY-MM-DD")}
     })
     .then((response)=>{
       response.data ? setShowToday(true) : setShowToday(false)
